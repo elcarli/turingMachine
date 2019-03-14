@@ -3,9 +3,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
+import lm.touring.frmPrincipal;
 
 public class Automaton {
-	private String[] alphabet;
+	public static String[] alphabet;
 	private String[][] transitionTable;
 	private String[] states;
 	private String[] finalStates;
@@ -26,15 +27,68 @@ public class Automaton {
 	public void transition() {
 		stateHistory.add(currentState);
 		String readSymbol = tape.read();
+                System.out.println("readSymbol="+readSymbol);
 		
-		int stateIndex = getStateIndex(currentState);
-		int symbolIndex = getSymbolIndex(readSymbol);
+                if (frmPrincipal.alfabeto.indexOf(readSymbol)!=-1){ //si el simbolo leído pertenece al alfabeto
+                    readSymbol="@";
+                }
+                    
+		int stateIndex = getStateIndex(currentState);   //estado actual
+                
+                System.out.println("stateIndex="+stateIndex);
+                
+                
+		int symbolIndex = getSymbolIndex(readSymbol);   //simbolo leido
+                System.out.println("symbolIndex="+symbolIndex);
+                
+                //si el símbolo leído NO pertenece al alfabeto
+                if (symbolIndex==-1)
+                {
+                    JOptionPane.showMessageDialog(null, "La máquina se detuvo, un caracter no pertenece al alfabeto");
+                    System.exit(0);
+                }
+                
+                                
 		String[] nextStateActions = transitionTable[stateIndex][symbolIndex].split(",");
-		
+		System.out.println("nextStateActions="+nextStateActions[0]+"  "+nextStateActions[1]+"  "+nextStateActions[2]);
+                
+                System.out.println("el nuevo SIMBOLO BUSCADO será el siguiente: "+frmPrincipal.simBuscado); 
+                
+                //Si estoy en q2    y   me dirijo al estado q3
+                if ("q2".equals(currentState) && "q3".equals(nextStateActions[0])){
+                    
+                    System.out.println(frmPrincipal.simBuscado); 
+                    
+                    //si el símbolo final NO es igual al buscado
+                    if (!tape.read().equals(frmPrincipal.simBuscado)){
+                    JOptionPane.showMessageDialog(null, "No es palíndromo");
+                    System.exit(0);
+                    }
+                    
+                    frmPrincipal.posBuscado++;
+                    System.out.println("la posicion del buscado: "+frmPrincipal.posBuscado);
+                    
+                    //el nuevo alfabeto será el siguiente caracter de la cadena y B
+                    frmPrincipal.simBuscado=String.valueOf(frmPrincipal.palabra.charAt(frmPrincipal.posBuscado));
+                    
+                    
+                    
+                }
+                    
+                
 		currentState = nextStateActions[0]; //contiene el estado al que salta
+                
+                System.out.println("currentState="+currentState);
+                
+                
+                
+                
 		
 		String symbolToWrite = nextStateActions[1]; //contiene el símbolo que se escribirá
-		
+		System.out.println("symbolToWrite="+symbolToWrite);
+                System.out.println("-----------------------");
+                System.out.println("-----------------------");
+                
 		if (!symbolToWrite.equals("-")) {   //si el símbolo se desea cambiar
 			tape.write(symbolToWrite);
 		}
@@ -68,6 +122,10 @@ public class Automaton {
 	public String[] getAlphabet() {
 		return alphabet;
 	}
+        
+        public void setAlphabet(String [] nuevo){
+            this.alphabet=nuevo;
+        }
 
 	public String[][] getTransitionTable() {
 		return transitionTable;
@@ -95,8 +153,7 @@ public class Automaton {
 	}
 
 	private void initAutomaton() {
-                String palabra = JOptionPane.showInputDialog(null, "Ingrese la palabra");
-		tape = new Tape(palabra);
+		tape = new Tape(frmPrincipal.palabra);
 		currentState = initialState;
 		stateHistory.clear();
 	}

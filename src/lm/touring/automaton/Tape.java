@@ -6,13 +6,13 @@ import java.util.List;
 
 public class Tape {
 	public static final String EMPTY_SYMBOL = "B";
-	public static int EMPTY_BUFFOR_SIZE;  //la mitad de la cinta (donde empieza el cabezal)
+	public static int INICIAL;  //Casilla donde empieza el cabezal
 	private List<String> tape;
 	private int headIndex;
 	
 	public Tape(String palabra) {
-            this.EMPTY_BUFFOR_SIZE = 0;
-            this.headIndex = EMPTY_BUFFOR_SIZE;
+            this.INICIAL = 2;
+            this.headIndex = INICIAL;
             
             //String palabra = "110011";
 		//String[] emptyValues = new String[EMPTY_BUFFOR_SIZE * 2 + 1];   //tamaño para que el cabezal esté en la mitad
@@ -25,14 +25,14 @@ public class Tape {
                 sb.append(palabra);
                 sb.append(EMPTY_SYMBOL+EMPTY_SYMBOL);
                 
-                String[] simbolos = sb.toString().split("");
+                String[] simbolos = sb.toString().split("");    //separo la palabra ingresada en un array
                 
                 
 		tape = new LinkedList<>(Arrays.asList(simbolos));    //cinta
 	}
 	
 	public void moveLeft() {
-		if (headIndex <= EMPTY_BUFFOR_SIZE) {
+		if (headIndex <= INICIAL) {
 			tape.add(0, EMPTY_SYMBOL);
 		} else {
 			--headIndex;
@@ -41,7 +41,7 @@ public class Tape {
 	
 	public void moveRight() {
 		++headIndex;
-		if (headIndex >= tape.size() - EMPTY_BUFFOR_SIZE) {
+		if (headIndex >= tape.size() - INICIAL) {
 			tape.add(EMPTY_SYMBOL);
 		}
 	}

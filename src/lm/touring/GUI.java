@@ -19,23 +19,26 @@ public class GUI extends JFrame {
 	private JButton playButton = new JButton("Play");
 	private JLabel currentStateLabel = new JLabel();
 	private JPanel canvasPanel;
-	private Automaton automaton;
+	public static Automaton automaton;
 	private boolean isPlaying = false;
+        
 
 	public GUI() {
-		automaton = new Automaton.AutomatonBuilder()
+            System.out.println(frmPrincipal.palabra);
+            
+            frmPrincipal.simBuscado=frmPrincipal.palabra.substring(frmPrincipal.posBuscado, 1);
+            
+                    automaton = new Automaton.AutomatonBuilder()
 				.transitionTable(new String[][] {
-					{"q1,B,R", "q2,B,R", "q6,B,R"},
-					{"q1,0,R", "q1,1,R", "q3,-,L"},
-					{"q2,0,R", "q2,1,R", "q4,-,L"},
-					{"q5,B,L", "q3,-,-", "q6,B,R"},
-                                        {"q4,-,-", "q5,B,L", "q6,B,R"},
-                                        {"q5,0,L", "q5,1,L", "q0,B,R"},
-					{"q6,-,R", "q6,-,R", "q0,-,R"}
+					{"q1,B,R",  "q4,B,R"},
+					{"q1,-,R",  "q2,B,L"},
+					{"q3,B,L",  "q4,B,R"},
+					{"q3,-,L",  "q0,B,R"},
+					{"q4,-,R",  "q4,-,R"}
 				})
-				.states("q0", "q1", "q2", "q3", "q4", "q5", "q6")
-				.alphabet("0", "1", "B")
-				.finalStates("q6")
+				.states("q0", "q1", "q2", "q3", "q4")
+				.alphabet("@", "B")    //empieza con el primer simbolo de la palabra
+				.finalStates("q4")
 				.build();
 		
 		initUI();
@@ -93,6 +96,7 @@ public class GUI extends JFrame {
 					if (isPlaying) {
 						automaton.transition();
 						updateStateLabel();
+                                                System.out.println( automaton.getAlphabet()[0]+" OR "+automaton.getAlphabet()[1]);
 					}
 					
 					try {
@@ -112,7 +116,7 @@ public class GUI extends JFrame {
                 String estado_actual = automaton.getCurrentState();
                 int bandera=1;
                 
-                if ("q6".equals(estado_actual)){
+                if ("q4".equals(estado_actual)){
                     // Obtenemos un Iterador y recorremos la lista.
                     Iterator iter = simbolos.iterator();
                     while (iter.hasNext()){
@@ -131,11 +135,11 @@ public class GUI extends JFrame {
                 
                 
         }
-
+/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			GUI gui = new GUI();
 			gui.setVisible(true);
 		});
-	}
+	}*/
 }
