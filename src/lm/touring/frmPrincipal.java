@@ -170,23 +170,31 @@ public class frmPrincipal extends javax.swing.JFrame {
                 txtSimbolo.setText("");
             }
             else{
-                JOptionPane.showMessageDialog(null, "Este símbolo ya fue ingresado");
+                JOptionPane.showMessageDialog(null, "Este símbolo ya fue ingresado", "Error al ingresar símbolo",JOptionPane.ERROR_MESSAGE);
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Solo se acepta simbolo de un caracter");
+            JOptionPane.showMessageDialog(null, "Solo se acepta símbolos de UN caracter", "Error al ingresar símbolo",JOptionPane.ERROR_MESSAGE);
         }
         
         
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
-        frmPrincipal.palabra = txtPalabra.getText();
-        
-        GUI ventanaEmergente = new GUI();
-        ventanaEmergente.setSize(1100, 600);
-        ventanaEmergente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ventanaEmergente.setVisible(true);
-        this.dispose();
+        if(listaAlfabeto.getModel().getSize()>=1){
+            if(txtPalabra.getText().length()>=1){
+                frmPrincipal.palabra = txtPalabra.getText();
+            
+                GUI ventanaEmergente = new GUI();
+                ventanaEmergente.setSize(1100, 600);
+                ventanaEmergente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                ventanaEmergente.setVisible(true);
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "No se acepta palabra vacía, mínimo un caracter", "Error en la palabra ingresada",JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe de haber mínimo UN símbolo en el alfabeto", "Error en el alfabeto",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     /**
