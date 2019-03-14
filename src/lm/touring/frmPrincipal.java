@@ -163,13 +163,17 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         
         String simbolo = txtSimbolo.getText();
-        if (alfabeto.indexOf(simbolo)==-1 && !"B".equals(simbolo)){
-            alfabeto.add(simbolo);
-            modelo.addElement(simbolo);
-            txtSimbolo.setText("");
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Este símbolo ya fue ingresado");
+        if(simbolo.length()==1){
+            if (alfabeto.indexOf(simbolo)==-1 && !"B".equals(simbolo)){
+                alfabeto.add(simbolo);
+                modelo.addElement(simbolo);
+                txtSimbolo.setText("");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Este símbolo ya fue ingresado");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Solo se acepta simbolo de un caracter");
         }
         
         
